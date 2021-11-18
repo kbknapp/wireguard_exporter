@@ -9,7 +9,8 @@ fn main() {
         .unwrap();
     let git_hash = String::from_utf8(output.stdout).unwrap();
     println!(
-        "cargo:rustc-env=VERSION_WITH_GIT_HASH={}",
-        format!("v{} ({})", crate_version!(), &git_hash[..10])
+        "cargo:rustc-env=VERSION_WITH_GIT_HASH='v{} ({})'",
+        crate_version!(),
+        &git_hash[..10]
     );
 }

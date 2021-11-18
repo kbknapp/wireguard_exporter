@@ -1,0 +1,34 @@
+---
+on: [push, pull_request]
+
+name: Continuous Integration
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - nightly
+          - 1.46.0 # MSRV
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          pdrofile: minimal
+          toolchain: ${{ matrix.rust }}
+          override: true
+
+      - name: Install cc
+        run: sudo apt-get update && sudo apt-get install --yes gcc
+
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test

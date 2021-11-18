@@ -1,0 +1,61 @@
+---
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+name: Create Release
+
+env:
+  RELEASE_BIN: wireguard_exporter
+  RELEASE_ADDS: >-
+    README.md
+    LICENSE-MIT
+    LICENSE-APACHE
+    CHANGELOG.md
+
+jobs:
+  release:
+    name: Release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          pdrofile: minimal
+          toolchain: stable
+          override: true
+          target: x86_64-unknown-linux-musl
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Install cc
+        run: sudo apt-get update && sudo apt-get install --yes gcc
+
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target x86_64-unknown-linux-musl
+
+      - name: Make artifacts dir
+        run: mkdir -p artifacts/
+
+      - name: Copy all artifacts into dir
+        run: cp target/x86_64-unknown-linux-musl/release/${{ env.RELEASE_BIN }} ${{ env.RELEASE_ADDS }} artifacts/
+
+      - name: Create archive for Linux
+        run: cd artifacts/  && tar czf ../${{ env.RELEASE_BIN }}-${{ steps.get_version.outputs.VERSION }}-x86_64-linux-musl.tar.gz ./*
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG.md
+          files: |
+            ${{ env.RELEASE_BIN }}-${{ steps.get_version.outputs.VERSION }}-x86_64-linux-musl.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: kbknapp/wireguard_exporter

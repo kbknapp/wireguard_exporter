@@ -28,7 +28,7 @@ capabilities in both the ambient and bounding set:
 
 `wireguard_exporter` is a single binary that must be placed somewhere in your
 `$PATH`. One can either download 64-bit Linux binaries from [the Release Page](https://github.com/kbknapp/wireguard_exporter/releases)
-or one can also compile from source.
+ or one can also compile from source.
 
 ## Compile from Source
 
@@ -91,7 +91,56 @@ scrape_configs:
 # Example Metrics
 
 ```
-TODO
+# HELP wireguard_bytes_total Total number of bytes per direction per interface
+# TYPE wireguard_bytes_total counter
+wireguard_bytes_total{direction="rx",interface="custom"} 19576636452
+wireguard_bytes_total{direction="rx",interface="wg0"} 1091996152
+wireguard_bytes_total{direction="tx",interface="custom"} 3919310388
+wireguard_bytes_total{direction="tx",interface="wg0"} 2393043528
+# HELP wireguard_duration_since_latest_handshake During since latest handshake for a peer
+# TYPE wireguard_duration_since_latest_handshake gauge
+wireguard_duration_since_latest_handshake{interface="custom",peer="q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs="} 51405
+wireguard_duration_since_latest_handshake{interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ="} 88405
+wireguard_duration_since_latest_handshake{interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk="} 116405
+wireguard_duration_since_latest_handshake{interface="custom",peer="nwj+Zw49AbYrzUAPzeRf8hhll/1dz8SjoOYZuB+JdT4="} 15296341405
+wireguard_duration_since_latest_handshake{interface="custom",peer="QF01u5CZhH9+CWcVY9pbsuTu3QsTcSqFvni3VfOiL2s="} 34405
+wireguard_duration_since_latest_handshake{interface="custom",peer="N5UQp3XbysLBAavUm1Cpv7xxjk99LwJD99z5//PsyCc="} 95405
+wireguard_duration_since_latest_handshake{interface="custom",peer="QlgHHfYP3aMlRG7d6/Zp9IhUOLrpT5G2GIdODODaUHQ="} 10690033405
+wireguard_duration_since_latest_handshake{interface="custom",peer="FtUeMGdNxgkVN0G9lpvOc5jtAQQ1m9DpvZPDCUdKBx0="} 96405
+wireguard_duration_since_latest_handshake{interface="wg0",peer="bRQZOyOZUvHMhBvCWq2sXO0VsRu6Aq5LCACi/R3AJk8="} 42405
+# HELP wireguard_interfaces_total Total number of interfaces
+# TYPE wireguard_interfaces_total gauge
+wireguard_interfaces_total 2
+# HELP wireguard_peer_bytes_total Total number of bytes per direction for a peer
+# TYPE wireguard_peer_bytes_total counter
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer=q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs=""} 0
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ="} 1240506784
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk="} 1312403276
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="nwj+Zw49AbYrzUAPzeRf8hhll/1dz8SjoOYZuB+JdT4="} 11962543712
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="QF01u5CZhH9+CWcVY9pbsuTu3QsTcSqFvni3VfOiL2s="} 0
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="N5UQp3XbysLBAavUm1Cpv7xxjk99LwJD99z5//PsyCc="} 0
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="QlgHHfYP3aMlRG7d6/Zp9IhUOLrpT5G2GIdODODaUHQ="} 353261276
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="FtUeMGdNxgkVN0G9lpvOc5jtAQQ1m9DpvZPDCUdKBx0="} 2150081456
+wireguard_peer_bytes_total{direction="rx",interface="wg0",peer=""} 1091996152
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs="} 0
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ="} 708900060
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk="} 714718444
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="nwj+Zw49AbYrzUAPzeRf8hhll/1dz8SjoOYZuB+JdT4="} 1171658320
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="QF01u5CZhH9+CWcVY9pbsuTu3QsTcSqFvni3VfOiL2s="} 0
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="N5UQp3XbysLBAavUm1Cpv7xxjk99LwJD99z5//PsyCc="} 0
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="QlgHHfYP3aMlRG7d6/Zp9IhUOLrpT5G2GIdODODaUHQ="} 88648
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="FtUeMGdNxgkVN0G9lpvOc5jtAQQ1m9DpvZPDCUdKBx0="} 480852300
+wireguard_peer_bytes_total{direction="tx",interface="wg0",peer="bRQZOyOZUvHMhBvCWq2sXO0VsRu6Aq5LCACi/R3AJk8="} 2393043528
+# HELP wireguard_peers_total Total number of peers per interfaces
+# TYPE wireguard_peers_total gauge
+wireguard_peers_total{interface="custom"} 7
+wireguard_peers_total{interface="wg0"} 1
+# HELP wireguard_scrape_duration_milliseconds Duration in milliseconds of the scrape
+# TYPE wireguard_scrape_duration_milliseconds gauge
+wireguard_scrape_duration_milliseconds 1
+# HELP wireguard_scrape_success If the scrape was a success
+# TYPE wireguard_scrape_success gauge
+wireguard_scrape_success 1
 ```
 
 # License
@@ -111,7 +160,7 @@ dual licensed as above, without any additional terms or conditions.
 
 [//]: # (badges)
 
-[rustc-image]: https://img.shields.io/badge/rustc-1.53+-blue.svg
+[rustc-image]: https://img.shields.io/badge/rustc-1.56+-blue.svg
 [crate-image]: https://img.shields.io/crates/v/wireguard_exporter.svg
 [crate-link]: https://crates.io/crates/wireguard_exporter
 [docs-image]: https://docs.rs/wireguard_exporter/badge.svg

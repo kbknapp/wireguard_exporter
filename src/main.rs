@@ -55,6 +55,8 @@ async fn main() -> Result<()> {
 async fn try_main(args: Args) -> Result<()> {
     tracing_subscriber::fmt::init();
 
+    let aliases = args.aliases();
+
     let running = Arc::new(AtomicBool::new(true));
 
     info!("Registering metrics...");
@@ -86,7 +88,9 @@ async fn try_main(args: Args) -> Result<()> {
         let before = Instant::now();
 
         debug!("Updating metrics...");
-        metrics.update(&WireguardState::scrape().await?).await;
+        metrics
+            .update(&WireguardState::scrape(&aliases).await?)
+            .await;
         let after = Instant::now();
 
         let elapsed = after.duration_since(before);

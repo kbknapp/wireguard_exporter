@@ -22,9 +22,6 @@ jobs:
           toolchain: ${{ matrix.rust }}
           override: true
 
-      - name: Install cc
-        run: sudo apt-get update && sudo apt-get install --yes gcc
-
       - uses: actions-rs/cargo@v1
         with:
           command: build

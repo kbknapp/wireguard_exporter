@@ -2,7 +2,6 @@
 
 ![Rust Version][rustc-image]
 [![crates.io][crate-image]][crate-link]
-[![Documentation][docs-image]][docs-link]
 [![Dependency Status][deps-image]][deps-link]
 
 An asynchronous Prometheus exporter for `wireguard`
@@ -163,11 +162,9 @@ dual licensed as above, without any additional terms or conditions.
 [rustc-image]: https://img.shields.io/badge/rustc-1.56+-blue.svg
 [crate-image]: https://img.shields.io/crates/v/wireguard_exporter.svg
 [crate-link]: https://crates.io/crates/wireguard_exporter
-[docs-image]: https://docs.rs/wireguard_exporter/badge.svg
-[docs-link]: https://docs.rs/wireguard_exporter
 [deps-image]: https://deps.rs/repo/github/kbknapp/wireguard_exporter/status.svg
 [deps-link]: https://deps.rs/repo/github/kbknapp/wireguard_exporter
 
 
-[//]: # Links
+[//]: # (Links)
 

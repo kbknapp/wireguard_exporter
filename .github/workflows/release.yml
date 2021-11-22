@@ -33,9 +33,6 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
-      - name: Install cc
-        run: sudo apt-get update && sudo apt-get install --yes gcc
-
       - uses: actions-rs/cargo@v1
         with:
           command: build

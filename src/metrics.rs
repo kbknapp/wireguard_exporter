@@ -1,6 +1,6 @@
-use chrono::{DateTime, Local, TimeZone};
 use color_eyre::eyre::Result;
 use prometheus::{IntCounterVec, IntGaugeVec, Opts, Registry};
+use time::OffsetDateTime;
 use tracing::{debug, trace};
 
 use crate::wireguard::WireguardState;
@@ -133,10 +133,11 @@ impl Metrics {
             pbtr.inc_by(diff);
 
             if let Some(latest_hs_ts) = p.handshake_timestamp {
-                let now: DateTime<Local> = Local::now();
-                let hs_ts: DateTime<Local> = Local.timestamp(latest_hs_ts as i64, 0);
+                let now = OffsetDateTime::now_local()
+                    .expect("Failed to get local offset time")
+                    .unix_timestamp();
 
-                let elapsed = now.signed_duration_since(hs_ts);
+                let elapsed = now - latest_hs_ts as i64;
 
                 self.duration_since_latest_handshake
                     .with_label_values(&[
@@ -147,7 +148,7 @@ impl Metrics {
                             .map(ToOwned::to_owned)
                             .unwrap_or_else(String::new),
                     ])
-                    .set(elapsed.num_milliseconds());
+                    .set(elapsed * 1000);
             }
         }
     }

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use color_eyre::eyre::{Result, WrapErr};
 use tokio::process::Command;
 
@@ -20,7 +22,7 @@ pub struct WireguardState {
 }
 
 impl WireguardState {
-    pub async fn scrape() -> Result<Self> {
+    pub async fn scrape(aliases: &HashMap<&str, &str>) -> Result<Self> {
         let mut peers = Vec::with_capacity(32); // Picked by fair dice roll
         let mut interfaces = Vec::new();
 
@@ -56,6 +58,7 @@ impl WireguardState {
                     let ts = handshake_ts.parse()?;
                     peers.push(Peer {
                         interface: interfaces.len() - 1,
+                        alias: aliases.get(pubkey).map(|&s| s.into()),
                         pubkey: pubkey.into(),
                         handshake_timestamp: if ts == 0 { None } else { Some(ts) },
                         tx_bytes: tx_bytes.parse()?,
@@ -84,6 +87,7 @@ impl WireguardState {
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct Peer {
     pub pubkey: String,
+    pub alias: Option<String>,
     pub interface: usize,
     pub tx_bytes: u64,
     pub rx_bytes: u64,

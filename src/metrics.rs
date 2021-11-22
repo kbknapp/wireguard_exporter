@@ -43,7 +43,7 @@ impl Metrics {
                 "wireguard_peer_bytes_total",
                 "Total number of bytes per direction for a peer",
             ),
-            &["interface", "peer", "direction"],
+            &["interface", "peer", "direction", "alias"],
         )?;
 
         let duration_since_latest_handshake = IntGaugeVec::new(
@@ -51,7 +51,7 @@ impl Metrics {
                 "wireguard_duration_since_latest_handshake",
                 "During since latest handshake for a peer",
             ),
-            &["interface", "peer"],
+            &["interface", "peer", "alias"],
         )?;
 
         debug!("Registering wireguard metrics");
@@ -112,6 +112,10 @@ impl Metrics {
                 &state.interfaces[p.interface],
                 &p.pubkey,
                 "tx",
+                &p.alias
+                    .as_ref()
+                    .map(ToOwned::to_owned)
+                    .unwrap_or_else(String::new),
             ]);
             let diff = p.tx_bytes - pbtt.get();
             pbtt.inc_by(diff);
@@ -120,6 +124,10 @@ impl Metrics {
                 &state.interfaces[p.interface],
                 &p.pubkey,
                 "rx",
+                &p.alias
+                    .as_ref()
+                    .map(ToOwned::to_owned)
+                    .unwrap_or_else(String::new),
             ]);
             let diff = p.rx_bytes - pbtr.get();
             pbtr.inc_by(diff);
@@ -131,7 +139,14 @@ impl Metrics {
                 let elapsed = now.signed_duration_since(hs_ts);
 
                 self.duration_since_latest_handshake
-                    .with_label_values(&[&state.interfaces[p.interface], &p.pubkey])
+                    .with_label_values(&[
+                        &state.interfaces[p.interface],
+                        &p.pubkey,
+                        &p.alias
+                            .as_ref()
+                            .map(ToOwned::to_owned)
+                            .unwrap_or_else(String::new),
+                    ])
                     .set(elapsed.num_milliseconds());
             }
         }

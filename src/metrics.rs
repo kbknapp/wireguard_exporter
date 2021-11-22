@@ -49,7 +49,7 @@ impl Metrics {
         let duration_since_latest_handshake = IntGaugeVec::new(
             Opts::new(
                 "wireguard_duration_since_latest_handshake",
-                "During since latest handshake for a peer",
+                "Duration in milliseconds since latest handshake for a peer",
             ),
             &["interface", "peer", "alias"],
         )?;

@@ -47,19 +47,20 @@ $ sudo cp target/release/wireguard_exporter /usr/local/bin/
 
 ```
 USAGE:
-    wireguard_exporter [FLAGS] [OPTIONS]
-
-FLAGS:
-    -h, --help       Prints help information
-    -q, --quiet      Supress output at a level or lower. -q: INFO, -qq: WARN, -qqq: ERROR (i.e.
-                     everything)
-    -v, --verbose    Show verbose output at a level or higher. -v:  DEBUG, -vv: TRACE
-    -V, --version    Prints version information
+    wireguard_exporter [OPTIONS]
 
 OPTIONS:
+    -a, --alias <ALIAS>...           Add an alias for a given public key in the form of
+                                     'alias:pubkey' (separate multiple with commas)
         --collect-interval <SECS>    How often metrics are gathered [default: 5]
+    -h, --help                       Print help information
     -l, --listen-address <ADDR>      The listen address scraping metrics [default: 0.0.0.0]
-    -p, --listen-port <PORT>         The listen port for scraping metrics [default: 9455]
+    -p, --listen-port <PORT>         The listen port for scraping metrics [default: 9586]
+    -q, --quiet                      Supress output at a level or lower. -q: INFO, -qq: WARN, -qqq:
+                                     ERROR (i.e. everything)
+    -v, --verbose                    Show verbose output at a level or higher. -v:  DEBUG, -vv:
+                                     TRACE
+    -V, --version                    Print version information
 ```
 
 To run with the default options, and the binary is installed somewhere in your
@@ -98,9 +99,9 @@ wireguard_bytes_total{direction="tx",interface="custom"} 3919310388
 wireguard_bytes_total{direction="tx",interface="wg0"} 2393043528
 # HELP wireguard_duration_since_latest_handshake During since latest handshake for a peer
 # TYPE wireguard_duration_since_latest_handshake gauge
-wireguard_duration_since_latest_handshake{interface="custom",peer="q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs="} 51405
-wireguard_duration_since_latest_handshake{interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ="} 88405
-wireguard_duration_since_latest_handshake{interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk="} 116405
+wireguard_duration_since_latest_handshake{interface="custom",peer="q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs=",alias="kevin"} 51405
+wireguard_duration_since_latest_handshake{interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ=",alias="jane"} 88405
+wireguard_duration_since_latest_handshake{interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk=",alias="robert"} 116405
 wireguard_duration_since_latest_handshake{interface="custom",peer="nwj+Zw49AbYrzUAPzeRf8hhll/1dz8SjoOYZuB+JdT4="} 15296341405
 wireguard_duration_since_latest_handshake{interface="custom",peer="QF01u5CZhH9+CWcVY9pbsuTu3QsTcSqFvni3VfOiL2s="} 34405
 wireguard_duration_since_latest_handshake{interface="custom",peer="N5UQp3XbysLBAavUm1Cpv7xxjk99LwJD99z5//PsyCc="} 95405
@@ -112,18 +113,18 @@ wireguard_duration_since_latest_handshake{interface="wg0",peer="bRQZOyOZUvHMhBvC
 wireguard_interfaces_total 2
 # HELP wireguard_peer_bytes_total Total number of bytes per direction for a peer
 # TYPE wireguard_peer_bytes_total counter
-wireguard_peer_bytes_total{direction="rx",interface="custom",peer=q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs=""} 0
-wireguard_peer_bytes_total{direction="rx",interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ="} 1240506784
-wireguard_peer_bytes_total{direction="rx",interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk="} 1312403276
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer=q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs="",alias="kevin"} 0
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ=",alias="jane"} 1240506784
+wireguard_peer_bytes_total{direction="rx",interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk=",alias="robert"} 1312403276
 wireguard_peer_bytes_total{direction="rx",interface="custom",peer="nwj+Zw49AbYrzUAPzeRf8hhll/1dz8SjoOYZuB+JdT4="} 11962543712
 wireguard_peer_bytes_total{direction="rx",interface="custom",peer="QF01u5CZhH9+CWcVY9pbsuTu3QsTcSqFvni3VfOiL2s="} 0
 wireguard_peer_bytes_total{direction="rx",interface="custom",peer="N5UQp3XbysLBAavUm1Cpv7xxjk99LwJD99z5//PsyCc="} 0
 wireguard_peer_bytes_total{direction="rx",interface="custom",peer="QlgHHfYP3aMlRG7d6/Zp9IhUOLrpT5G2GIdODODaUHQ="} 353261276
 wireguard_peer_bytes_total{direction="rx",interface="custom",peer="FtUeMGdNxgkVN0G9lpvOc5jtAQQ1m9DpvZPDCUdKBx0="} 2150081456
 wireguard_peer_bytes_total{direction="rx",interface="wg0",peer=""} 1091996152
-wireguard_peer_bytes_total{direction="tx",interface="custom",peer="q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs="} 0
-wireguard_peer_bytes_total{direction="tx",interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ="} 708900060
-wireguard_peer_bytes_total{direction="tx",interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk="} 714718444
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs=",alias="kevin"} 0
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ=",alias="jane"} 708900060
+wireguard_peer_bytes_total{direction="tx",interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk=",alias="robert"} 714718444
 wireguard_peer_bytes_total{direction="tx",interface="custom",peer="nwj+Zw49AbYrzUAPzeRf8hhll/1dz8SjoOYZuB+JdT4="} 1171658320
 wireguard_peer_bytes_total{direction="tx",interface="custom",peer="QF01u5CZhH9+CWcVY9pbsuTu3QsTcSqFvni3VfOiL2s="} 0
 wireguard_peer_bytes_total{direction="tx",interface="custom",peer="N5UQp3XbysLBAavUm1Cpv7xxjk99LwJD99z5//PsyCc="} 0

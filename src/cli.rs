@@ -24,7 +24,7 @@ pub struct Args {
     /// Supress output at a level or lower. -q: INFO, -qq: WARN, -qqq: ERROR (i.e. everything)
     #[clap(long, short, overrides_with = "verbose", parse(from_occurrences))]
     pub quiet: u8,
-    /// Add an alias for a given public key in the form of 'alias:pubkey' (separate multiple with commas)
+    /// Add an alias for a given public key in the form of 'pubkey:alias' (separate multiple with commas)
     #[clap(long, short, value_delimiter = ',', multiple_occurrences = true)]
     pub alias: Vec<Alias>,
 }

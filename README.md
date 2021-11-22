@@ -51,7 +51,7 @@ USAGE:
 
 OPTIONS:
     -a, --alias <ALIAS>...           Add an alias for a given public key in the form of
-                                     'alias:pubkey' (separate multiple with commas)
+                                     'pubkey:alias' (separate multiple with commas)
         --collect-interval <SECS>    How often metrics are gathered [default: 5]
     -h, --help                       Print help information
     -l, --listen-address <ADDR>      The listen address scraping metrics [default: 0.0.0.0]

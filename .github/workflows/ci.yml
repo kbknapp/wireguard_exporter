@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions-rs/toolchain@v1
         with:
-          pdrofile: minimal
+          profile: minimal
           toolchain: ${{ matrix.rust }}
           override: true
 

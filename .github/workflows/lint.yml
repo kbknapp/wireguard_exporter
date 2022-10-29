@@ -9,7 +9,7 @@ jobs:
 
       - uses: actions-rs/toolchain@v1
         with:
-          pdrofile: minimal
+          profile: minimal
           toolchain: nightly
           override: true
           components: clippy, rustfmt

@@ -32,10 +32,7 @@ impl Metrics {
         )?;
 
         let peer_endpoint = IntGaugeVec::new(
-            Opts::new(
-                "wireguard_peer_endpoint",
-                "Peers info. static value",
-            ),
+            Opts::new("wireguard_peer_endpoint", "Peers info. static value"),
             &["interface", "endpoint_ip", "peer", "alias"],
         )?;
 
@@ -120,15 +117,17 @@ impl Metrics {
             assert!(p.interface < state.interfaces.len());
 
             if let Some(endpoint) = p.endpoint {
-                self.peer_endpoint.with_label_values(&[
-                    &state.interfaces[p.interface],
-                    &endpoint.ip().to_string(),
-                    &p.pubkey,
-                    &p.alias
-                        .as_ref()
-                        .map(ToOwned::to_owned)
-                        .unwrap_or_else(String::new),
-                ]).set(1);
+                self.peer_endpoint
+                    .with_label_values(&[
+                        &state.interfaces[p.interface],
+                        &endpoint.ip().to_string(),
+                        &p.pubkey,
+                        &p.alias
+                            .as_ref()
+                            .map(ToOwned::to_owned)
+                            .unwrap_or_else(String::new),
+                    ])
+                    .set(1);
             };
 
             let pbtt = self.peer_bytes_total.with_label_values(&[

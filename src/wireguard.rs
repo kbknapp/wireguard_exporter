@@ -1,5 +1,5 @@
-use std::{collections::HashMap, str::FromStr, net::SocketAddr};
 use color_eyre::eyre::{Result, WrapErr};
+use std::{collections::HashMap, net::SocketAddr, str::FromStr};
 use tokio::process::Command;
 
 pub async fn wg_show_dump() -> Result<String> {

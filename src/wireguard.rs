@@ -1,6 +1,5 @@
-use std::collections::HashMap;
-
 use color_eyre::eyre::{Result, WrapErr};
+use std::{collections::HashMap, net::SocketAddr, str::FromStr};
 use tokio::process::Command;
 
 pub async fn wg_show_dump() -> Result<String> {
@@ -48,7 +47,7 @@ impl WireguardState {
                     Some(_iface),
                     Some(pubkey),
                     Some(_psk),
-                    Some(_endpoint),
+                    Some(endpoint),
                     Some(_allowed_ips),
                     Some(handshake_ts),
                     Some(tx_bytes),
@@ -60,6 +59,7 @@ impl WireguardState {
                         interface: interfaces.len() - 1,
                         alias: aliases.get(pubkey).map(|&s| s.into()),
                         pubkey: pubkey.into(),
+                        endpoint: SocketAddr::from_str(endpoint).ok(),
                         handshake_timestamp: if ts == 0 { None } else { Some(ts) },
                         tx_bytes: tx_bytes.parse()?,
                         rx_bytes: rx_bytes.parse()?,
@@ -87,6 +87,7 @@ impl WireguardState {
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct Peer {
     pub pubkey: String,
+    pub endpoint: Option<SocketAddr>,
     pub alias: Option<String>,
     pub interface: usize,
     pub tx_bytes: u64,

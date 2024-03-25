@@ -8,6 +8,7 @@ use crate::wireguard::WireguardState;
 pub struct Metrics {
     interfaces_total: IntGaugeVec,
     peers_total: IntGaugeVec,
+    peer_endpoint: IntGaugeVec,
     bytes_total: IntCounterVec,
     peer_bytes_total: IntCounterVec,
     duration_since_latest_handshake: IntGaugeVec,
@@ -28,6 +29,11 @@ impl Metrics {
                 "Total number of peers per interfaces",
             ),
             &["interface"],
+        )?;
+
+        let peer_endpoint = IntGaugeVec::new(
+            Opts::new("wireguard_peer_endpoint", "Peers info. static value"),
+            &["interface", "endpoint_ip", "peer", "alias"],
         )?;
 
         let bytes_total = IntCounterVec::new(
@@ -57,6 +63,7 @@ impl Metrics {
         debug!("Registering wireguard metrics");
         r.register(Box::new(interfaces_total.clone()))?;
         r.register(Box::new(peers_total.clone()))?;
+        r.register(Box::new(peer_endpoint.clone()))?;
         r.register(Box::new(bytes_total.clone()))?;
         r.register(Box::new(peer_bytes_total.clone()))?;
         r.register(Box::new(duration_since_latest_handshake.clone()))?;
@@ -65,6 +72,7 @@ impl Metrics {
             interfaces_total,
             bytes_total,
             peers_total,
+            peer_endpoint,
             peer_bytes_total,
             duration_since_latest_handshake,
         })
@@ -107,6 +115,20 @@ impl Metrics {
 
         for p in &state.peers {
             assert!(p.interface < state.interfaces.len());
+
+            if let Some(endpoint) = p.endpoint {
+                self.peer_endpoint
+                    .with_label_values(&[
+                        &state.interfaces[p.interface],
+                        &endpoint.ip().to_string(),
+                        &p.pubkey,
+                        &p.alias
+                            .as_ref()
+                            .map(ToOwned::to_owned)
+                            .unwrap_or_else(String::new),
+                    ])
+                    .set(1);
+            };
 
             let pbtt = self.peer_bytes_total.with_label_values(&[
                 &state.interfaces[p.interface],

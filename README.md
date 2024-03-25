@@ -19,6 +19,7 @@ capabilities in both the ambient and bounding set:
 
 - Total number of bytes transferred in/out per peer
 - Total number of bytes transferred in/out per interface
+- Metrics with the info for each connected peer
 - Time since last handshake per peer
 - Scrape duration in milliseconds
 - Scrape success
@@ -131,6 +132,11 @@ wireguard_peer_bytes_total{direction="tx",interface="custom",peer="N5UQp3XbysLBA
 wireguard_peer_bytes_total{direction="tx",interface="custom",peer="QlgHHfYP3aMlRG7d6/Zp9IhUOLrpT5G2GIdODODaUHQ="} 88648
 wireguard_peer_bytes_total{direction="tx",interface="custom",peer="FtUeMGdNxgkVN0G9lpvOc5jtAQQ1m9DpvZPDCUdKBx0="} 480852300
 wireguard_peer_bytes_total{direction="tx",interface="wg0",peer="bRQZOyOZUvHMhBvCWq2sXO0VsRu6Aq5LCACi/R3AJk8="} 2393043528
+# HELP wireguard_peer_endpoint Peers info. static value
+# TYPE wireguard_peer_endpoint gauge
+wireguard_peer_endpoint{alias="kevin",endpoint_ip="1.1.1.1",interface="custom",peer="q2JWEKWfLPU5UjG2Sq31xx2GsSjdhKNtdT/X/tFVyjs="} 1
+wireguard_peer_endpoint{alias="jane",endpoint_ip="8.8.8.8",interface="custom",peer="2ELWFmGnqhtRpu4r2PUKc0cw+ELtuMPLd6l0KsoCUBQ="} 1
+wireguard_peer_endpoint{alias="robert",endpoint_ip="127.0.0.1",interface="custom",peer="duVVziZbyIiIPoRprisE69K0By198Cn8dPwY5bFecEk="} 1
 # HELP wireguard_peers_total Total number of peers per interfaces
 # TYPE wireguard_peers_total gauge
 wireguard_peers_total{interface="custom"} 7

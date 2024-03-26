@@ -12,6 +12,7 @@ use color_eyre::{
     config::{HookBuilder, Theme},
     eyre::Result,
 };
+use maxminddb;
 use prometheus::{IntGauge, Registry};
 use prometheus_hyper::Server;
 use tokio::time::{Duration, Instant};
@@ -57,11 +58,15 @@ async fn try_main(args: Args) -> Result<()> {
 
     let aliases = args.aliases();
 
+    let maxminddb_reader = args.geoip_path.as_ref().map_or(None, |path| {
+        Some(unwrap_or_exit!(maxminddb::Reader::open_readfile(path)))
+    });
+
     let running = Arc::new(AtomicBool::new(true));
 
     info!("Registering metrics...");
     let registry = Arc::new(Registry::new());
-    let mut metrics = unwrap_or_exit!(Metrics::new(&registry));
+    let mut metrics = unwrap_or_exit!(Metrics::new(&registry, &maxminddb_reader));
     let scrape_duration = unwrap_or_exit!(IntGauge::new(
         "wireguard_scrape_duration_milliseconds",
         "Duration in milliseconds of the scrape",
@@ -89,7 +94,7 @@ async fn try_main(args: Args) -> Result<()> {
 
         debug!("Updating metrics...");
         metrics
-            .update(&WireguardState::scrape(&aliases).await?)
+            .update(&WireguardState::scrape(&aliases).await?, &maxminddb_reader)
             .await;
         let after = Instant::now();
 

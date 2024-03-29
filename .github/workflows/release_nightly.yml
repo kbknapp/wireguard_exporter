@@ -1,7 +1,7 @@
 ---
 on:
   push:
-    branches: main
+    #branches: main
 
 name: Nightly Release
 
@@ -58,7 +58,7 @@ jobs:
           SHA: ${{ steps.short-sha.outputs.sha }}
 
       - name: Remove previous Nightly Release
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        uses: dev-drprasad/delete-tag-and-release@v1.0.1
         with:
           delete_release: true
           tag_name: nightly

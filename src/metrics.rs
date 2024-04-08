@@ -13,12 +13,13 @@ pub struct Metrics {
     bytes_total: IntCounterVec,
     peer_bytes_total: IntCounterVec,
     duration_since_latest_handshake: IntGaugeVec,
+    maxminddb_reader: Option<maxminddb::Reader<Vec<u8>>>
 }
 
 impl Metrics {
     pub fn new(
         r: &Registry,
-        maxminddb_reader: &Option<maxminddb::Reader<Vec<u8>>>,
+        maxminddb_reader: Option<maxminddb::Reader<Vec<u8>>>,
     ) -> Result<Self> {
         trace!("Metrics::new");
 
@@ -88,13 +89,13 @@ impl Metrics {
             peer_endpoint,
             peer_bytes_total,
             duration_since_latest_handshake,
+            maxminddb_reader
         })
     }
 
     pub async fn update(
         &mut self,
-        state: &WireguardState,
-        maxminddb_reader: &Option<maxminddb::Reader<Vec<u8>>>,
+        state: &WireguardState
     ) {
         let it = self.interfaces_total.with_label_values(&[]);
         it.set(state.interfaces.len() as i64);
@@ -134,7 +135,7 @@ impl Metrics {
             assert!(p.interface < state.interfaces.len());
 
             if let Some(endpoint) = p.endpoint {
-                match maxminddb_reader {
+                match &self.maxminddb_reader {
                     Some(reader) => {
                         let endpoint_country = match reader.lookup::<geoip2::Country>(endpoint.ip())
                         {

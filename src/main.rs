@@ -66,7 +66,7 @@ async fn try_main(args: Args) -> Result<()> {
 
     info!("Registering metrics...");
     let registry = Arc::new(Registry::new());
-    let mut metrics = unwrap_or_exit!(Metrics::new(&registry, &maxminddb_reader));
+    let mut metrics = unwrap_or_exit!(Metrics::new(&registry, maxminddb_reader));
     let scrape_duration = unwrap_or_exit!(IntGauge::new(
         "wireguard_scrape_duration_milliseconds",
         "Duration in milliseconds of the scrape",
@@ -94,7 +94,7 @@ async fn try_main(args: Args) -> Result<()> {
 
         debug!("Updating metrics...");
         metrics
-            .update(&WireguardState::scrape(&aliases).await?, &maxminddb_reader)
+            .update(&WireguardState::scrape(&aliases).await?)
             .await;
         let after = Instant::now();
 

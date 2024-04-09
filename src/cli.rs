@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env, net::IpAddr, str::FromStr};
+use std::{collections::HashMap, env, net::IpAddr, path::PathBuf, str::FromStr};
 
 use clap::{crate_authors, Parser};
 
@@ -27,6 +27,9 @@ pub struct Args {
     /// Add an alias for a given public key in the form of 'pubkey:alias' (separate multiple with commas)
     #[clap(long, short, value_delimiter = ',', multiple_occurrences = true)]
     pub alias: Vec<Alias>,
+    /// Do geoip lookup using Country MMDB from the PATH for 'endpoint_ip' attribute in the 'wireguard_peer_endpoint' metric and add attribute 'endpoint_country'
+    #[clap(short, long, value_name = "PATH")]
+    pub geoip_path: Option<PathBuf>,
 }
 
 impl Args {

@@ -1,3 +1,13 @@
+<a name="0.3.0"></a>
+
+### Features
+
+- Can now lookup country geoip lookup for endpoint addresses via MaxMindDB ([#6](https://github.com/kbknapp/wireguard_exporter/pull/6)) (Thanks to [@furmur](https://github.com/furmur))
+
+### Important Changes
+
+- bump MSRV to 1.58.1 (3713673)[https://github.com/kbknapp/wireguard_exporter/commit/3713673adc0b1391076086eb41c4b2d14403b43e]
+
 <a name="0.2.0"></a>
 ## 0.2.0 Initial Release (2024-03-28)
 

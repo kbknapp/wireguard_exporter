@@ -125,6 +125,8 @@ impl Metrics {
             btr.inc_by(diff);
         }
 
+        self.peer_endpoint.reset();
+
         for p in &state.peers {
             assert!(p.interface < state.interfaces.len());
 
